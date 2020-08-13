@@ -9,10 +9,10 @@ class MyScalatraServletTests extends ScalatraFunSuite with DBInit {
 
   addServlet(classOf[MyScalatraServlet], "/*")
 
-  test("A get request with a badly formatted id should return a 404") {
+  test("A get request with a badly formatted id should return a 400") {
     withDB(List()) { () =>
       get("/users/badness") {
-        status should equal (404)
+        status should equal (400)
       }
     }
   }

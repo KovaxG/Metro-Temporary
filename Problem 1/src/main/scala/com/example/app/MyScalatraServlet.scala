@@ -3,6 +3,7 @@ package com.example.app
 import DB.DBSessionSupport
 import DB.UserSchema
 import Types.User
+import Types.UserResponse
 import org.scalatra._
 import org.squeryl.PrimitiveTypeMode._
 import io.circe.syntax._
@@ -23,14 +24,12 @@ import io.circe.generic.auto._
   - aim for code simplicity and functional style
  */
 
-case class UserResponse(user: User)
-
 class MyScalatraServlet extends ScalatraServlet with DBSessionSupport {
 
   get("/users/:id") {
 
     def parseID(id: String): Either[ActionResult, Int] =
-      params(id).toIntOption.toRight(NotFound("Invalid ID"))
+      params(id).toIntOption.toRight(BadRequest("Invalid ID"))
 
     def lookupUserWithID(id: Int): Either[ActionResult, User] =
       from(UserSchema.users)(user => where(user.id === id) select(user))
